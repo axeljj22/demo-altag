@@ -3,223 +3,1141 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Altag — Demo Landing</title>
+  <title>ALTAG · Innovación NASA en Lima</title>
+  <meta name="description" content="El astronauta Don Thomas, Frank DaCosta de NASA y Wascar Ascurra llegan a Lima. Descubrí cómo la innovación de la NASA puede transformar tu empresa." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
   <style>
+    /* ─── RESET & BASE ─── */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
     :root {
-      --bg: #0a0a0f;
-      --surface: #13131a;
-      --accent: #7c3aed;
-      --accent2: #a855f7;
-      --text: #f1f0ff;
-      --muted: #8b8aa0;
+      --nasa-blue: #0B3D91;
+      --nasa-blue-mid: #1a52b8;
+      --nasa-red: #FC3D21;
+      --space: #000810;
+      --space-2: #060e1f;
+      --surface: rgba(255,255,255,0.03);
+      --border: rgba(255,255,255,0.08);
+      --border-glow: rgba(11,61,145,0.5);
+      --text: #F0F4FF;
+      --muted: #7a8aaa;
+      --mono: 'DM Mono', monospace;
     }
-
+    html { scroll-behavior: smooth; }
     body {
-      background: var(--bg);
+      background: var(--space);
       color: var(--text);
-      font-family: 'Segoe UI', system-ui, sans-serif;
+      font-family: 'Inter', sans-serif;
+      overflow-x: hidden;
       line-height: 1.6;
     }
 
-    /* NAV */
-    nav {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 1.25rem 2rem;
-      border-bottom: 1px solid #1e1e2e;
-      position: sticky;
-      top: 0;
-      background: rgba(10,10,15,0.85);
-      backdrop-filter: blur(12px);
-      z-index: 100;
+    /* ─── STARS CANVAS ─── */
+    #stars-canvas {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
     }
-    .logo { font-size: 1.4rem; font-weight: 700; color: var(--accent2); letter-spacing: -0.5px; }
-    .nav-cta {
-      background: var(--accent);
-      color: #fff;
-      border: none;
-      padding: 0.55rem 1.4rem;
-      border-radius: 8px;
-      font-size: 0.9rem;
-      font-weight: 600;
-      cursor: pointer;
-      transition: background 0.2s;
-    }
-    .nav-cta:hover { background: var(--accent2); }
 
-    /* HERO */
+    /* ─── SCAN LINE OVERLAY ─── */
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 2px,
+        rgba(0,0,0,0.03) 2px,
+        rgba(0,0,0,0.03) 4px
+      );
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    /* ─── NAV ─── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.1rem 3rem;
+      border-bottom: 1px solid var(--border);
+      background: rgba(0,8,16,0.75);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+    }
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    .nav-logo-mark {
+      width: 32px; height: 32px;
+      background: var(--nasa-red);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.6rem;
+      font-family: var(--mono);
+      font-weight: 500;
+      color: white;
+      letter-spacing: 0.5px;
+      flex-shrink: 0;
+    }
+    .nav-brand { font-size: 1.1rem; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; }
+    .nav-collab { font-family: var(--mono); font-size: 0.7rem; color: var(--muted); letter-spacing: 1px; }
+    .nav-collab span { color: var(--nasa-red); }
+    nav a.cta-nav {
+      background: var(--nasa-red);
+      color: white;
+      padding: 0.6rem 1.5rem;
+      border-radius: 4px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      text-decoration: none;
+      transition: opacity 0.2s, transform 0.2s;
+      text-transform: uppercase;
+    }
+    nav a.cta-nav:hover { opacity: 0.85; transform: translateY(-1px); }
+
+    /* ─── HERO ─── */
     .hero {
-      min-height: 88vh;
+      position: relative;
+      z-index: 2;
+      min-height: 100vh;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
       text-align: center;
-      padding: 4rem 1.5rem;
-      background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(124,58,237,0.18) 0%, transparent 70%);
+      padding: 8rem 1.5rem 5rem;
+      overflow: hidden;
     }
-    .badge {
-      display: inline-block;
-      background: rgba(124,58,237,0.15);
-      border: 1px solid rgba(124,58,237,0.4);
-      color: var(--accent2);
-      font-size: 0.78rem;
-      font-weight: 600;
-      letter-spacing: 1px;
+
+    /* Earth glow */
+    .hero::before {
+      content: '';
+      position: absolute;
+      bottom: -300px; left: 50%;
+      transform: translateX(-50%);
+      width: 1200px; height: 600px;
+      background: radial-gradient(ellipse at center bottom,
+        rgba(11,61,145,0.35) 0%,
+        rgba(11,61,145,0.1) 40%,
+        transparent 70%);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+
+    .mission-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      letter-spacing: 2px;
       text-transform: uppercase;
-      padding: 0.35rem 1rem;
-      border-radius: 999px;
-      margin-bottom: 1.5rem;
-    }
-    h1 {
-      font-size: clamp(2.4rem, 6vw, 4.5rem);
-      font-weight: 800;
-      line-height: 1.1;
-      letter-spacing: -1.5px;
-      max-width: 800px;
-      margin-bottom: 1.25rem;
-    }
-    h1 span { color: var(--accent2); }
-    .subtitle {
-      font-size: clamp(1rem, 2.5vw, 1.2rem);
-      color: var(--muted);
-      max-width: 560px;
+      color: var(--nasa-red);
+      border: 1px solid rgba(252,61,33,0.3);
+      padding: 0.4rem 1.1rem;
+      border-radius: 2px;
       margin-bottom: 2.5rem;
+      animation: fadeUp 0.8s ease both;
     }
-    .cta-group { display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center; }
+    .mission-tag::before {
+      content: '';
+      width: 6px; height: 6px;
+      background: var(--nasa-red);
+      border-radius: 50%;
+      animation: pulse-red 1.5s infinite;
+    }
+    @keyframes pulse-red {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(0.8); }
+    }
+
+    h1.hero-title {
+      font-size: clamp(2.8rem, 7vw, 6.5rem);
+      font-weight: 900;
+      line-height: 1.0;
+      letter-spacing: -2px;
+      max-width: 1000px;
+      margin-bottom: 1.5rem;
+      animation: fadeUp 0.9s ease 0.1s both;
+    }
+    h1.hero-title em {
+      font-style: normal;
+      color: transparent;
+      -webkit-text-stroke: 1.5px rgba(255,255,255,0.25);
+    }
+    h1.hero-title .accent { color: var(--nasa-red); }
+
+    .hero-sub {
+      font-size: clamp(1rem, 2vw, 1.2rem);
+      color: var(--muted);
+      max-width: 620px;
+      margin-bottom: 1rem;
+      line-height: 1.7;
+      animation: fadeUp 0.9s ease 0.2s both;
+    }
+    .hero-location {
+      font-family: var(--mono);
+      font-size: 0.78rem;
+      color: var(--muted);
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 3rem;
+      animation: fadeUp 0.9s ease 0.25s both;
+    }
+    .hero-location span { color: var(--text); }
+
+    .hero-cta-group {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      justify-content: center;
+      animation: fadeUp 0.9s ease 0.3s both;
+    }
     .btn-primary {
-      background: var(--accent);
-      color: #fff;
-      padding: 0.85rem 2.2rem;
-      border-radius: 10px;
+      background: var(--nasa-red);
+      color: white;
+      padding: 1rem 2.8rem;
+      border-radius: 4px;
       font-size: 1rem;
-      font-weight: 700;
-      border: none;
-      cursor: pointer;
-      transition: background 0.2s, transform 0.15s;
-      box-shadow: 0 0 32px rgba(124,58,237,0.35);
+      font-weight: 800;
+      text-decoration: none;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      transition: all 0.2s;
+      box-shadow: 0 0 40px rgba(252,61,33,0.35), 0 4px 20px rgba(0,0,0,0.4);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
     }
-    .btn-primary:hover { background: var(--accent2); transform: translateY(-2px); }
+    .btn-primary:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 0 60px rgba(252,61,33,0.5), 0 8px 30px rgba(0,0,0,0.4);
+    }
     .btn-secondary {
       background: transparent;
       color: var(--text);
-      padding: 0.85rem 2.2rem;
-      border-radius: 10px;
-      font-size: 1rem;
+      padding: 1rem 2rem;
+      border-radius: 4px;
+      font-size: 0.9rem;
       font-weight: 600;
-      border: 1px solid #2e2e42;
-      cursor: pointer;
-      transition: border-color 0.2s;
+      text-decoration: none;
+      border: 1px solid var(--border);
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      transition: all 0.2s;
     }
-    .btn-secondary:hover { border-color: var(--accent); }
+    .btn-secondary:hover { border-color: rgba(255,255,255,0.3); background: var(--surface); }
 
-    /* FEATURES */
-    .features {
-      padding: 5rem 1.5rem;
-      max-width: 1100px;
-      margin: 0 auto;
+    /* ─── COUNTDOWN ─── */
+    .countdown-bar {
+      position: relative;
+      z-index: 2;
+      background: rgba(11,61,145,0.12);
+      border-top: 1px solid rgba(11,61,145,0.3);
+      border-bottom: 1px solid rgba(11,61,145,0.3);
+      padding: 1.5rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 3rem;
+      flex-wrap: wrap;
     }
-    .section-title {
-      text-align: center;
-      font-size: clamp(1.8rem, 4vw, 2.6rem);
-      font-weight: 700;
-      letter-spacing: -1px;
-      margin-bottom: 0.75rem;
-    }
-    .section-sub {
-      text-align: center;
+    .countdown-label {
+      font-family: var(--mono);
+      font-size: 0.7rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
       color: var(--muted);
-      margin-bottom: 3rem;
-      font-size: 1.05rem;
+      text-align: center;
+      margin-bottom: 0.2rem;
     }
-    .grid {
+    .countdown-unit {
+      text-align: center;
+    }
+    .countdown-num {
+      font-family: var(--mono);
+      font-size: clamp(1.8rem, 4vw, 2.8rem);
+      font-weight: 500;
+      color: var(--text);
+      line-height: 1;
+    }
+    .countdown-sep {
+      font-size: 2rem;
+      color: var(--nasa-red);
+      font-weight: 300;
+      align-self: flex-start;
+      padding-top: 0.1rem;
+    }
+    .countdown-event {
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      color: var(--muted);
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+    }
+
+    /* ─── SECTION BASE ─── */
+    section { position: relative; z-index: 2; }
+    .container { max-width: 1160px; margin: 0 auto; padding: 0 1.5rem; }
+
+    .section-tag {
+      font-family: var(--mono);
+      font-size: 0.68rem;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--nasa-red);
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+    .section-tag::before {
+      content: '';
+      width: 24px;
+      height: 1px;
+      background: var(--nasa-red);
+    }
+    h2.section-title {
+      font-size: clamp(2rem, 4.5vw, 3.2rem);
+      font-weight: 800;
+      letter-spacing: -1px;
+      line-height: 1.1;
+      margin-bottom: 1.25rem;
+    }
+    .section-desc {
+      color: var(--muted);
+      font-size: 1.05rem;
+      max-width: 560px;
+      line-height: 1.7;
+    }
+
+    /* ─── ABOUT / WHY ─── */
+    .why { padding: 7rem 0; }
+    .why-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      grid-template-columns: 1fr 1fr;
+      gap: 5rem;
+      align-items: center;
+    }
+    .why-right { display: flex; flex-direction: column; gap: 1.5rem; }
+    .why-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-left: 2px solid var(--nasa-blue);
+      padding: 1.5rem;
+      border-radius: 0 6px 6px 0;
+      transition: border-color 0.3s, transform 0.3s;
+    }
+    .why-card:hover { border-left-color: var(--nasa-red); transform: translateX(6px); }
+    .why-card h4 { font-size: 0.95rem; font-weight: 700; margin-bottom: 0.4rem; }
+    .why-card p { font-size: 0.88rem; color: var(--muted); line-height: 1.6; }
+    .stat-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+      margin-top: 2rem;
+    }
+    .stat-box {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      padding: 1.5rem;
+      border-radius: 6px;
+      text-align: center;
+    }
+    .stat-num {
+      font-family: var(--mono);
+      font-size: 2.2rem;
+      font-weight: 500;
+      color: var(--nasa-red);
+      display: block;
+    }
+    .stat-label { font-size: 0.78rem; color: var(--muted); letter-spacing: 1px; text-transform: uppercase; }
+
+    /* ─── SPEAKERS ─── */
+    .speakers { padding: 7rem 0; background: linear-gradient(180deg, transparent 0%, rgba(11,61,145,0.05) 50%, transparent 100%); }
+    .speakers-header {
+      text-align: center;
+      margin-bottom: 4rem;
+    }
+    .speakers-header .section-tag { justify-content: center; }
+    .speakers-header .section-tag::before { display: none; }
+    .speakers-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
       gap: 1.5rem;
     }
-    .card {
+    .speaker-card {
       background: var(--surface);
-      border: 1px solid #1e1e2e;
-      border-radius: 14px;
-      padding: 2rem;
-      transition: border-color 0.2s, transform 0.2s;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      overflow: hidden;
+      transition: border-color 0.3s, transform 0.3s;
+      position: relative;
     }
-    .card:hover { border-color: var(--accent); transform: translateY(-4px); }
-    .card-icon { font-size: 2rem; margin-bottom: 1rem; }
-    .card h3 { font-size: 1.1rem; font-weight: 700; margin-bottom: 0.5rem; }
-    .card p { color: var(--muted); font-size: 0.95rem; }
-
-    /* CTA FINAL */
-    .cta-section {
-      background: linear-gradient(135deg, rgba(124,58,237,0.2) 0%, rgba(168,85,247,0.1) 100%);
-      border: 1px solid rgba(124,58,237,0.25);
-      border-radius: 20px;
-      margin: 2rem auto 6rem;
-      max-width: 700px;
-      padding: 4rem 2rem;
-      text-align: center;
+    .speaker-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--nasa-blue), var(--nasa-red));
+      opacity: 0;
+      transition: opacity 0.3s;
     }
-    .cta-section h2 { font-size: clamp(1.8rem, 4vw, 2.4rem); font-weight: 800; margin-bottom: 1rem; letter-spacing: -1px; }
-    .cta-section p { color: var(--muted); margin-bottom: 2rem; }
+    .speaker-card:hover { border-color: rgba(11,61,145,0.5); transform: translateY(-6px); }
+    .speaker-card:hover::before { opacity: 1; }
+    .speaker-img-wrap {
+      aspect-ratio: 3/2.5;
+      background: linear-gradient(135deg, #060e1f 0%, #0b1a33 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .speaker-img-wrap::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(0deg, rgba(0,8,16,0.8) 0%, transparent 50%);
+    }
+    .speaker-avatar {
+      width: 90px; height: 90px;
+      border-radius: 50%;
+      background: rgba(11,61,145,0.3);
+      border: 2px solid rgba(11,61,145,0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+      z-index: 1;
+    }
+    .speaker-body { padding: 1.75rem; }
+    .speaker-role {
+      font-family: var(--mono);
+      font-size: 0.65rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--nasa-red);
+      margin-bottom: 0.4rem;
+    }
+    .speaker-name {
+      font-size: 1.25rem;
+      font-weight: 800;
+      margin-bottom: 0.75rem;
+      line-height: 1.2;
+    }
+    .speaker-bio { font-size: 0.85rem; color: var(--muted); line-height: 1.65; }
+    .speaker-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      margin-top: 1rem;
+      background: rgba(11,61,145,0.15);
+      border: 1px solid rgba(11,61,145,0.3);
+      padding: 0.3rem 0.8rem;
+      border-radius: 999px;
+      font-size: 0.72rem;
+      color: #7ba4ff;
+      font-family: var(--mono);
+    }
 
-    footer {
-      text-align: center;
+    /* ─── WHAT YOU GET ─── */
+    .agenda { padding: 7rem 0; }
+    .agenda-header { margin-bottom: 4rem; }
+    .agenda-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.5rem;
+    }
+    .agenda-item {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
       padding: 2rem;
+      display: flex;
+      gap: 1.25rem;
+      transition: border-color 0.3s, transform 0.3s;
+    }
+    .agenda-item:hover { border-color: rgba(252,61,33,0.3); transform: translateY(-3px); }
+    .agenda-num {
+      font-family: var(--mono);
+      font-size: 0.65rem;
+      color: var(--nasa-red);
+      letter-spacing: 1px;
+      flex-shrink: 0;
+      padding-top: 0.15rem;
+    }
+    .agenda-item h4 { font-size: 1rem; font-weight: 700; margin-bottom: 0.5rem; }
+    .agenda-item p { font-size: 0.87rem; color: var(--muted); line-height: 1.6; }
+
+    /* ─── FOR WHO ─── */
+    .for-who { padding: 7rem 0; background: linear-gradient(180deg, transparent, rgba(11,61,145,0.06) 50%, transparent); }
+    .for-who-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.3fr;
+      gap: 5rem;
+      align-items: center;
+    }
+    .profiles-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+    .profile-chip {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 1rem 1.25rem;
+      font-size: 0.88rem;
+      font-weight: 600;
+      transition: all 0.2s;
+      cursor: default;
+    }
+    .profile-chip:hover { background: rgba(11,61,145,0.15); border-color: rgba(11,61,145,0.4); }
+    .profile-chip span { display: block; font-size: 0.72rem; color: var(--muted); font-weight: 400; margin-top: 0.2rem; }
+    .industries {
+      margin-top: 1.5rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+    .industry-tag {
+      font-family: var(--mono);
+      font-size: 0.7rem;
+      letter-spacing: 1px;
+      text-transform: uppercase;
       color: var(--muted);
-      font-size: 0.85rem;
-      border-top: 1px solid #1e1e2e;
+      border: 1px solid var(--border);
+      padding: 0.3rem 0.75rem;
+      border-radius: 2px;
+    }
+
+    /* ─── LEAD FORM ─── */
+    .form-section {
+      padding: 7rem 0 5rem;
+    }
+    .form-wrapper {
+      max-width: 780px;
+      margin: 0 auto;
+      background: linear-gradient(135deg, rgba(11,61,145,0.1) 0%, rgba(252,61,33,0.05) 100%);
+      border: 1px solid rgba(11,61,145,0.3);
+      border-radius: 12px;
+      padding: 4rem 3rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .form-wrapper::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--nasa-blue), var(--nasa-red));
+    }
+    .form-header { text-align: center; margin-bottom: 3rem; }
+    .form-header .section-tag { justify-content: center; }
+    .form-header .section-tag::before { display: none; }
+    .form-header h2 { font-size: clamp(1.8rem, 3.5vw, 2.6rem); }
+    .form-header p { color: var(--muted); margin-top: 0.75rem; font-size: 0.95rem; }
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+    .form-group { display: flex; flex-direction: column; gap: 0.4rem; }
+    .form-group.full { grid-column: 1 / -1; }
+    label {
+      font-family: var(--mono);
+      font-size: 0.68rem;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    input, select, textarea {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 0.85rem 1rem;
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      font-size: 0.95rem;
+      outline: none;
+      transition: border-color 0.2s, background 0.2s;
+      width: 100%;
+      -webkit-appearance: none;
+    }
+    input::placeholder, textarea::placeholder { color: rgba(120,130,160,0.5); }
+    input:focus, select:focus, textarea:focus {
+      border-color: var(--nasa-blue);
+      background: rgba(11,61,145,0.08);
+    }
+    select option { background: #060e1f; }
+    textarea { resize: vertical; min-height: 90px; }
+    .form-submit {
+      margin-top: 1.5rem;
+      width: 100%;
+      background: var(--nasa-red);
+      color: white;
+      padding: 1.1rem;
+      border: none;
+      border-radius: 6px;
+      font-size: 1rem;
+      font-weight: 800;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all 0.2s;
+      box-shadow: 0 0 40px rgba(252,61,33,0.3);
+    }
+    .form-submit:hover {
+      background: #e8330f;
+      transform: translateY(-2px);
+      box-shadow: 0 0 60px rgba(252,61,33,0.5);
+    }
+    .form-disclaimer {
+      text-align: center;
+      font-size: 0.78rem;
+      color: var(--muted);
+      margin-top: 1.25rem;
+    }
+    .form-success {
+      display: none;
+      text-align: center;
+      padding: 2rem;
+    }
+    .form-success h3 { font-size: 1.5rem; font-weight: 800; margin-bottom: 0.75rem; }
+    .form-success p { color: var(--muted); }
+
+    /* ─── HUD DECORATION ─── */
+    .hud-line {
+      width: 100%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(11,61,145,0.4), transparent);
+      margin: 1rem 0;
+    }
+
+    /* ─── FOOTER ─── */
+    footer {
+      position: relative;
+      z-index: 2;
+      border-top: 1px solid var(--border);
+      padding: 2.5rem 3rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+    .footer-brand { font-weight: 800; font-size: 1rem; letter-spacing: 2px; }
+    .footer-brand span { color: var(--nasa-red); }
+    .footer-text { font-family: var(--mono); font-size: 0.7rem; color: var(--muted); letter-spacing: 1px; }
+
+    /* ─── ANIMATIONS ─── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .reveal {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: none;
+    }
+    .reveal-delay-1 { transition-delay: 0.1s; }
+    .reveal-delay-2 { transition-delay: 0.2s; }
+    .reveal-delay-3 { transition-delay: 0.3s; }
+    .reveal-delay-4 { transition-delay: 0.4s; }
+
+    /* ─── GRID OVERLAY DECORATION ─── */
+    .grid-overlay {
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(11,61,145,0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(11,61,145,0.05) 1px, transparent 1px);
+      background-size: 60px 60px;
+      pointer-events: none;
+    }
+
+    /* ─── RESPONSIVE ─── */
+    @media (max-width: 900px) {
+      nav { padding: 1rem 1.5rem; }
+      .why-grid, .for-who-grid { grid-template-columns: 1fr; gap: 3rem; }
+      .speakers-grid { grid-template-columns: 1fr; max-width: 440px; margin: 0 auto; }
+      .agenda-grid { grid-template-columns: 1fr; }
+      .form-grid { grid-template-columns: 1fr; }
+      .form-wrapper { padding: 2.5rem 1.5rem; }
+      footer { flex-direction: column; text-align: center; }
+      .stat-grid { grid-template-columns: 1fr 1fr; }
+      .profiles-grid { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 600px) {
+      h1.hero-title { letter-spacing: -1px; }
+      .countdown-bar { gap: 1.5rem; }
+      .countdown-num { font-size: 2rem; }
     }
   </style>
 </head>
 <body>
 
-  <nav>
-    <div class="logo">Altag</div>
-    <button class="nav-cta">Quiero mi lugar</button>
-  </nav>
+<canvas id="stars-canvas"></canvas>
 
-  <section class="hero">
-    <div class="badge">Evento exclusivo · 2026</div>
-    <h1>El evento que va a<br/><span>cambiar tu manera</span> de hacer negocios</h1>
-    <p class="subtitle">Una experiencia diseñada para founders, marketers y creadores que quieren ir al siguiente nivel.</p>
-    <div class="cta-group">
-      <button class="btn-primary">Reservá tu lugar →</button>
-      <button class="btn-secondary">Ver agenda</button>
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">
+    <div class="nav-logo-mark">ALT</div>
+    <div>
+      <div class="nav-brand">Altag</div>
+      <div class="nav-collab">En colaboración con <span>NASA</span></div>
     </div>
-  </section>
-
-  <section class="features">
-    <h2 class="section-title">¿Por qué este evento?</h2>
-    <p class="section-sub">Todo lo que necesitás en un solo lugar.</p>
-    <div class="grid">
-      <div class="card">
-        <div class="card-icon">🎯</div>
-        <h3>Estrategia accionable</h3>
-        <p>No teoría. Casos reales, frameworks probados y pasos concretos que podés implementar el lunes.</p>
-      </div>
-      <div class="card">
-        <div class="card-icon">🤝</div>
-        <h3>Networking de calidad</h3>
-        <p>Conectá con founders, inversores y referentes que realmente están construyendo cosas.</p>
-      </div>
-      <div class="card">
-        <div class="card-icon">⚡</div>
-        <h3>Alta energía</h3>
-        <p>Un formato diseñado para que te vayas con claridad, momentum y ganas de ejecutar.</p>
-      </div>
-    </div>
-  </section>
-
-  <div class="cta-section">
-    <h2>Los lugares son limitados.</h2>
-    <p>No esperes al último momento. Asegurá el tuyo ahora.</p>
-    <button class="btn-primary">Quiero mi lugar →</button>
   </div>
+  <a class="cta-nav" href="#registro">Quiero mi lugar</a>
+</nav>
 
-  <footer>© 2026 Altag. Todos los derechos reservados.</footer>
+<!-- HERO -->
+<section class="hero">
+  <div class="grid-overlay"></div>
+  <div class="mission-tag">Misión: Innovación · Lima, Perú</div>
+  <h1 class="hero-title">
+    Lo que la <span class="accent">NASA</span><br/>
+    descubrió en el espacio,<br/>
+    <em>ahora es tuyo</em>
+  </h1>
+  <p class="hero-sub">
+    Un astronauta de la NASA y los principales referentes en innovación espacial llegan a Lima para mostrarte cómo la tecnología que llevó humanos al espacio puede transformar tu empresa.
+  </p>
+  <p class="hero-location">
+    <span>Lima, Perú</span> · 2026 · Evento Presencial
+  </p>
+  <div class="hero-cta-group">
+    <a class="btn-primary" href="#registro">
+      Reservar mi lugar →
+    </a>
+    <a class="btn-secondary" href="#speakers">Ver los speakers</a>
+  </div>
+</section>
+
+<!-- COUNTDOWN -->
+<div class="countdown-bar" id="countdown-bar">
+  <div class="countdown-event">Cuenta regresiva al despegue</div>
+  <div style="display:flex;align-items:center;gap:1.5rem;flex-wrap:wrap;justify-content:center;">
+    <div class="countdown-unit">
+      <div class="countdown-label">Días</div>
+      <div class="countdown-num" id="cd-days">--</div>
+    </div>
+    <div class="countdown-sep">:</div>
+    <div class="countdown-unit">
+      <div class="countdown-label">Horas</div>
+      <div class="countdown-num" id="cd-hours">--</div>
+    </div>
+    <div class="countdown-sep">:</div>
+    <div class="countdown-unit">
+      <div class="countdown-label">Min</div>
+      <div class="countdown-num" id="cd-mins">--</div>
+    </div>
+    <div class="countdown-sep">:</div>
+    <div class="countdown-unit">
+      <div class="countdown-label">Seg</div>
+      <div class="countdown-num" id="cd-secs">--</div>
+    </div>
+  </div>
+</div>
+
+<!-- WHY -->
+<section class="why">
+  <div class="container">
+    <div class="why-grid">
+      <div class="why-left">
+        <div class="section-tag reveal">Por qué importa</div>
+        <h2 class="section-title reveal reveal-delay-1">La innovación que<br/>cambió el mundo<br/>llega a tu empresa.</h2>
+        <p class="section-desc reveal reveal-delay-2">
+          Durante décadas, la NASA desarrolló tecnologías que hoy usamos sin saber: desde los materiales en tu ropa deportiva hasta los sistemas de gestión de procesos más complejos del planeta. <br/><br/>Ahora, por primera vez en Lima, los protagonistas de esa historia te van a mostrar cómo aplicarla en tu industria.
+        </p>
+        <div class="stat-grid reveal reveal-delay-3">
+          <div class="stat-box">
+            <span class="stat-num">44</span>
+            <span class="stat-label">Días en el espacio</span>
+          </div>
+          <div class="stat-box">
+            <span class="stat-num">700+</span>
+            <span class="stat-label">Órbitas terrestres</span>
+          </div>
+          <div class="stat-box">
+            <span class="stat-num">4</span>
+            <span class="stat-label">Misiones completadas</span>
+          </div>
+          <div class="stat-box">
+            <span class="stat-num">17.6M</span>
+            <span class="stat-label">Millas recorridas</span>
+          </div>
+        </div>
+      </div>
+      <div class="why-right reveal reveal-delay-2">
+        <div class="why-card">
+          <h4>🚀 Tecnología real, resultados reales</h4>
+          <p>No es teoría. Es la metodología probada en las misiones más exigentes de la historia humana, adaptada a empresas que quieren liderar.</p>
+        </div>
+        <div class="why-card">
+          <h4>🌎 Relevancia para tu industria</h4>
+          <p>Desde tecnología hasta consumo masivo, retail y logística. Vás a salir con una hoja de ruta concreta para tu sector.</p>
+        </div>
+        <div class="why-card">
+          <h4>🤝 Acceso único a los protagonistas</h4>
+          <p>Tres voces que raramente están en la misma sala: un astronauta, el PR de la NASA y el estratega de innovación. Lima, una sola vez.</p>
+        </div>
+        <div class="why-card">
+          <h4>⚡ Decisiones que mueven organizaciones</h4>
+          <p>Diseñado para tomadores de decisión. Cada minuto del evento está pensado para que llegues al lunes con claridad y momentum.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SPEAKERS -->
+<section class="speakers" id="speakers">
+  <div class="container">
+    <div class="speakers-header">
+      <div class="section-tag reveal">Los protagonistas</div>
+      <h2 class="section-title reveal reveal-delay-1">Quien va a estar<br/>en el escenario</h2>
+      <p class="section-desc reveal reveal-delay-2" style="margin:0 auto;text-align:center;">Tres personas que vivieron la innovación desde adentro. Ahora te la entregan.</p>
+    </div>
+    <div class="speakers-grid">
+
+      <div class="speaker-card reveal">
+        <div class="speaker-img-wrap">
+          <div class="speaker-avatar">👨‍🚀</div>
+        </div>
+        <div class="speaker-body">
+          <div class="speaker-role">Astronauta NASA</div>
+          <div class="speaker-name">Dr. Don Thomas</div>
+          <div class="speaker-bio">
+            Veterano de 4 misiones del Transbordador Espacial. Pasó 44 días en el espacio, completó 700 órbitas y viajó 17.6 millones de millas. Doctor en Materiales por Cornell. Hoy convierte su experiencia en insights para líderes empresariales.
+          </div>
+          <div class="speaker-badge">🛸 STS-65 · STS-70 · STS-83 · STS-94</div>
+        </div>
+      </div>
+
+      <div class="speaker-card reveal reveal-delay-1">
+        <div class="speaker-img-wrap">
+          <div class="speaker-avatar">🎙️</div>
+        </div>
+        <div class="speaker-body">
+          <div class="speaker-role">PR & Comunicaciones · NASA</div>
+          <div class="speaker-name">Frank DaCosta</div>
+          <div class="speaker-bio">
+            Director de Relaciones Públicas de la NASA. El hombre detrás de cómo la agencia espacial más poderosa del mundo comunica su misión, construye su marca y conecta con millones de personas. Una perspectiva única sobre liderazgo e impacto.
+          </div>
+          <div class="speaker-badge">📡 NASA HQ · Communications</div>
+        </div>
+      </div>
+
+      <div class="speaker-card reveal reveal-delay-2">
+        <div class="speaker-img-wrap">
+          <div class="speaker-avatar">⚡</div>
+        </div>
+        <div class="speaker-body">
+          <div class="speaker-role">Estratega de Innovación</div>
+          <div class="speaker-name">Wascar Ascurra</div>
+          <div class="speaker-bio">
+            El puente entre la ciencia espacial y los negocios. Especialista en aterrizar la innovación de la NASA en estrategias accionables para empresas latinoamericanas. Si Don Thomas es el astronauta, Wascar es el traductor.
+          </div>
+          <div class="speaker-badge">🌎 Innovación · Latam</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- AGENDA / LO QUE VAS A LLEVARTE -->
+<section class="agenda">
+  <div class="container">
+    <div class="agenda-header">
+      <div class="section-tag reveal">Lo que te llevás</div>
+      <h2 class="section-title reveal reveal-delay-1">Un día que va a<br/>cambiar cómo lideras.</h2>
+      <p class="section-desc reveal reveal-delay-2">Cada bloque fue diseñado para transformar la forma en que tomás decisiones.</p>
+    </div>
+    <div class="agenda-grid">
+      <div class="agenda-item reveal">
+        <div class="agenda-num">01</div>
+        <div>
+          <h4>Mentalidad de misión crítica</h4>
+          <p>Cómo piensan y deciden los astronautas bajo presión extrema. Frameworks que podés implementar en tu equipo desde el día uno.</p>
+        </div>
+      </div>
+      <div class="agenda-item reveal reveal-delay-1">
+        <div class="agenda-num">02</div>
+        <div>
+          <h4>Innovación aplicada a tu industria</h4>
+          <p>Mapping de tecnologías NASA a casos concretos de tecnología, consumo masivo, retail y logística en Perú y Latam.</p>
+        </div>
+      </div>
+      <div class="agenda-item reveal reveal-delay-2">
+        <div class="agenda-num">03</div>
+        <div>
+          <h4>Comunicación de alto impacto</h4>
+          <p>Cómo construir narrativas que muevan organizaciones. El secreto detrás de cómo NASA comunica para millones.</p>
+        </div>
+      </div>
+      <div class="agenda-item reveal reveal-delay-3">
+        <div class="agenda-num">04</div>
+        <div>
+          <h4>Hoja de ruta de innovación</h4>
+          <p>Con Wascar Ascurra, construís el puente entre lo que viste en el evento y lo que ejecutás el lunes siguiente en tu empresa.</p>
+        </div>
+      </div>
+      <div class="agenda-item reveal">
+        <div class="agenda-num">05</div>
+        <div>
+          <h4>Networking de decisión</h4>
+          <p>Una sala de C-levels, gerentes generales y líderes de las principales industrias del Perú. Las conversaciones que ocurren acá valen tanto como el contenido.</p>
+        </div>
+      </div>
+      <div class="agenda-item reveal reveal-delay-1">
+        <div class="agenda-num">06</div>
+        <div>
+          <h4>Sesión privada con los speakers</h4>
+          <p>Para un grupo reducido de asistentes: acceso directo a los tres expertos. Preguntas, consultas, conexión real. Cupos muy limitados.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOR WHO -->
+<section class="for-who">
+  <div class="container">
+    <div class="for-who-grid">
+      <div class="reveal">
+        <div class="section-tag">Para quién es esto</div>
+        <h2 class="section-title">Esto es para<br/>quienes deciden.</h2>
+        <p class="section-desc" style="margin-bottom:2rem;">
+          No es un evento para todo el mundo. Está diseñado para líderes que tienen la responsabilidad —y la ambición— de transformar sus organizaciones.
+        </p>
+        <div class="industries">
+          <div class="industry-tag">Tecnología</div>
+          <div class="industry-tag">Consumo masivo</div>
+          <div class="industry-tag">Retail</div>
+          <div class="industry-tag">Logística</div>
+          <div class="industry-tag">Banca & Finanzas</div>
+          <div class="industry-tag">Manufactura</div>
+          <div class="industry-tag">Salud</div>
+          <div class="industry-tag">Educación</div>
+        </div>
+      </div>
+      <div class="profiles-grid reveal reveal-delay-1">
+        <div class="profile-chip">
+          CEO / Fundador
+          <span>Visión + ejecución</span>
+        </div>
+        <div class="profile-chip">
+          Gerente General
+          <span>Liderazgo operativo</span>
+        </div>
+        <div class="profile-chip">
+          Gte. Comercial
+          <span>Growth & ventas</span>
+        </div>
+        <div class="profile-chip">
+          CTO / Dir. Tech
+          <span>Liderazgo técnico</span>
+        </div>
+        <div class="profile-chip">
+          CMO / Marketing
+          <span>Marca e innovación</span>
+        </div>
+        <div class="profile-chip">
+          COO / Ops
+          <span>Eficiencia y escala</span>
+        </div>
+        <div class="profile-chip">
+          Director de Estrategia
+          <span>Visión de largo plazo</span>
+        </div>
+        <div class="profile-chip">
+          Inversores / VCs
+          <span>Capital + portafolio</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FORM / REGISTRO -->
+<section class="form-section" id="registro">
+  <div class="container">
+    <div class="form-wrapper reveal">
+      <div class="form-header">
+        <div class="section-tag">Registro</div>
+        <h2 class="section-title">Los lugares son<br/>estrictamente limitados.</h2>
+        <p>Completá tus datos y un miembro del equipo de Altag se va a comunicar con vos para confirmar tu acceso.</p>
+      </div>
+
+      <form id="lead-form">
+        <div class="form-grid">
+          <div class="form-group">
+            <label for="nombre">Nombre completo *</label>
+            <input type="text" id="nombre" name="nombre" placeholder="Juan Pérez" required />
+          </div>
+          <div class="form-group">
+            <label for="email">Email corporativo *</label>
+            <input type="email" id="email" name="email" placeholder="juan@empresa.com" required />
+          </div>
+          <div class="form-group">
+            <label for="empresa">Empresa *</label>
+            <input type="text" id="empresa" name="empresa" placeholder="Nombre de tu empresa" required />
+          </div>
+          <div class="form-group">
+            <label for="cargo">Cargo *</label>
+            <input type="text" id="cargo" name="cargo" placeholder="CEO / Gerente General / etc." required />
+          </div>
+          <div class="form-group">
+            <label for="industria">Industria *</label>
+            <select id="industria" name="industria" required>
+              <option value="" disabled selected>Seleccioná tu industria</option>
+              <option>Tecnología</option>
+              <option>Consumo masivo</option>
+              <option>Retail</option>
+              <option>Logística</option>
+              <option>Banca & Finanzas</option>
+              <option>Manufactura</option>
+              <option>Salud</option>
+              <option>Educación</option>
+              <option>Otra</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="telefono">Teléfono / WhatsApp</label>
+            <input type="tel" id="telefono" name="telefono" placeholder="+51 999 000 000" />
+          </div>
+          <div class="form-group full">
+            <label for="motivacion">¿Por qué querés estar en este evento?</label>
+            <textarea id="motivacion" name="motivacion" placeholder="Contanos brevemente cuál es el desafío que querés resolver o qué esperás llevarte del evento..."></textarea>
+          </div>
+        </div>
+        <button type="submit" class="form-submit">
+          Quiero mi lugar en el evento →
+        </button>
+        <p class="form-disclaimer">
+          Tu información es confidencial y solo se utiliza para gestionar tu acceso al evento.
+        </p>
+      </form>
+
+      <div class="form-success" id="form-success">
+        <div style="font-size:3rem;margin-bottom:1rem;">🚀</div>
+        <h3>¡Recibimos tu solicitud!</h3>
+        <p>Un miembro del equipo de Altag va a contactarte en las próximas 24 horas para confirmar tu lugar. Revisá tu email <strong id="success-email"></strong>.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<div class="hud-line" style="position:relative;z-index:2;"></div>
+<footer>
+  <div class="footer-brand">ALTAG <span>·</span> NASA Innovation Event</div>
+  <div class="footer-text">Lima, Perú · 2026 · Todos los derechos reservados</div>
+</footer>
+
+<script>
+  /* ── STARS ── */
+  const canvas = document.getElementById('stars-canvas');
+  const ctx = canvas.getContext('2d');
+  let stars = [];
+
+  function resize() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+  }
+
+  function initStars() {
+    stars = [];
+    const count = Math.floor((canvas.width * canvas.height) / 4000);
+    for (let i = 0; i < count; i++) {
+      stars.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        r: Math.random() * 1.2,
+        a: Math.random(),
+        speed: 0.0003 + Math.random() * 0.0005
+      });
+    }
+  }
+
+  function drawStars() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    stars.forEach(s => {
+      s.a += s.speed;
+      const alpha = 0.3 + 0.7 * Math.abs(Math.sin(s.a));
+      ctx.beginPath();
+      ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(180,200,255,${alpha})`;
+      ctx.fill();
+    });
+    requestAnimationFrame(drawStars);
+  }
+
+  resize();
+  initStars();
+  drawStars();
+  window.addEventListener('resize', () => { resize(); initStars(); });
+
+  /* ── COUNTDOWN ── */
+  // Event date — set to 90 days from now as placeholder
+  const eventDate = new Date();
+  eventDate.setDate(eventDate.getDate() + 90);
+  eventDate.setHours(9, 0, 0, 0);
+
+  function updateCountdown() {
+    const now = new Date();
+    const diff = eventDate - now;
+    if (diff <= 0) return;
+    const d = Math.floor(diff / 86400000);
+    const h = Math.floor((diff % 86400000) / 3600000);
+    const m = Math.floor((diff % 3600000) / 60000);
+    const s = Math.floor((diff % 60000) / 1000);
+    document.getElementById('cd-days').textContent = String(d).padStart(2, '0');
+    document.getElementById('cd-hours').textContent = String(h).padStart(2, '0');
+    document.getElementById('cd-mins').textContent = String(m).padStart(2, '0');
+    document.getElementById('cd-secs').textContent = String(s).padStart(2, '0');
+  }
+  updateCountdown();
+  setInterval(updateCountdown, 1000);
+
+  /* ── SCROLL REVEAL ── */
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        observer.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+  /* ── FORM ── */
+  document.getElementById('lead-form').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const email = document.getElementById('email').value;
+    document.getElementById('success-email').textContent = email;
+    this.style.display = 'none';
+    document.getElementById('form-success').style.display = 'block';
+    // Here you'd POST to your backend / HubSpot / etc.
+  });
+</script>
 
 </body>
 </html>
