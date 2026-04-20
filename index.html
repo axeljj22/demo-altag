@@ -24,8 +24,8 @@
     #starfield{position:fixed;inset:0;z-index:0;pointer-events:none}
 
     /* ── NAV ── */
-    nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;align-items:center;justify-content:space-between;padding:1.5rem 3.5rem;transition:background .4s,border-color .4s;border-bottom:1px solid transparent}
-    nav.s{background:rgba(4,5,10,.88);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-color:var(--line)}
+    nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;align-items:center;justify-content:space-between;padding:.85rem 3rem;transition:background .4s,border-color .4s;border-bottom:1px solid transparent}
+    nav.s{background:rgba(4,5,10,.92);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-color:var(--line)}
     .n-logo{font-family:var(--sg);font-size:.95rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase}
     .n-logo em{font-style:normal;color:var(--nr)}
     .n-r{display:flex;align-items:center;gap:2rem}
@@ -36,47 +36,41 @@
 
     /* ── HERO ── */
     .hero{position:relative;z-index:1;height:100svh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;overflow:hidden;padding:0 2rem}
-    .hero-atm{position:absolute;inset:0;background:radial-gradient(ellipse 70% 60% at 50% 60%,rgba(11,61,145,.12) 0%,transparent 70%);pointer-events:none}
 
-    /* Rocket wrapper — scroll-driven parallax */
-    #rocket-wrap{position:absolute;bottom:-20px;left:50%;transform:translateX(-50%);width:120px;z-index:2;pointer-events:none;will-change:transform}
-    #rocket-svg{width:100%;height:auto;display:block}
+    /* Video background */
+    .hero-video{position:absolute;inset:0;overflow:hidden;background:#000 url('https://images-assets.nasa.gov/image/KSC-20260327-PH-KLS01_0284/KSC-20260327-PH-KLS01_0284~large.jpg') center/cover no-repeat}
+    .hero-video iframe{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:max(100%,calc(100vh*16/9));height:max(100%,calc(100vw*9/16));min-width:177.78vh;min-height:56.25vw;pointer-events:none;border:none}
+    @media(max-width:768px){.hero-video iframe{display:none}}
 
-    /* Exhaust */
-    #exhaust{position:absolute;bottom:-10px;left:50%;transform:translateX(-50%);width:36px;display:flex;flex-direction:column;align-items:center;gap:2px;opacity:0;pointer-events:none;transition:opacity .3s}
-    .ex-p{border-radius:999px;background:linear-gradient(180deg,rgba(252,180,20,.9),rgba(252,61,33,.6),transparent);animation:flicker .12s infinite alternate}
-    .ex-p:nth-child(1){width:28px;height:55px}
-    .ex-p:nth-child(2){width:18px;height:35px;opacity:.7;animation-delay:.05s}
-    .ex-p:nth-child(3){width:10px;height:20px;opacity:.4;animation-delay:.1s}
-    @keyframes flicker{from{transform:scaleX(1) scaleY(1)}to{transform:scaleX(.85) scaleY(1.08)}}
-
-    /* Shockwave ring at launch */
-    #shockwave{position:absolute;bottom:60px;left:50%;transform:translateX(-50%) scale(0);width:200px;height:40px;border-radius:50%;border:2px solid rgba(252,180,20,.5);opacity:0;pointer-events:none}
+    /* Overlays — let the fire/glow breathe through */
+    .hero-vignette{position:absolute;inset:0;background:linear-gradient(180deg,rgba(4,5,10,.75) 0%,rgba(4,5,10,.1) 35%,rgba(4,5,10,.1) 55%,rgba(4,5,10,.85) 100%);pointer-events:none}
+    .hero-sides{position:absolute;inset:0;background:linear-gradient(90deg,rgba(4,5,10,.55) 0%,transparent 30%,transparent 70%,rgba(4,5,10,.55) 100%);pointer-events:none}
+    .hero-glow-top{position:absolute;top:0;left:0;right:0;height:120px;background:linear-gradient(180deg,rgba(4,5,10,1),transparent);pointer-events:none}
 
     /* Hero text */
-    .hero-content{position:relative;z-index:3;max-width:960px}
-    .hero-label{font-family:var(--in);font-size:.68rem;font-weight:400;letter-spacing:.22em;text-transform:uppercase;color:var(--dimmer);margin-bottom:2.25rem;display:block;clip-path:inset(0 100% 0 0);animation:wipe .9s cubic-bezier(.77,0,.18,1) .2s forwards}
+    .hero-content{position:relative;z-index:3;max-width:980px}
+    .hero-label{font-family:var(--in);font-size:.68rem;font-weight:400;letter-spacing:.22em;text-transform:uppercase;color:rgba(240,243,255,.6);margin-bottom:2rem;display:block;clip-path:inset(0 100% 0 0);animation:wipe .9s cubic-bezier(.77,0,.18,1) .2s forwards}
     .hero-label span{color:var(--nr)}
-    h1{font-family:var(--sg);font-weight:700;font-size:clamp(3rem,6.8vw,7.5rem);line-height:.96;letter-spacing:-.025em;margin-bottom:1.75rem}
+    h1{font-family:var(--sg);font-weight:700;font-size:clamp(3rem,6.8vw,7.5rem);line-height:.96;letter-spacing:-.025em;margin-bottom:1.75rem;text-shadow:0 2px 40px rgba(0,0,0,.5)}
     .h1-l{display:block;overflow:hidden}
     .h1-l span{display:block;transform:translateY(110%);animation:slideup .9s cubic-bezier(.22,1,.36,1) forwards}
     .h1-l:nth-child(1) span{animation-delay:.35s}
     .h1-l:nth-child(2) span{animation-delay:.48s}
     .h1-l:nth-child(3) span{animation-delay:.61s}
     .red{color:var(--nr)}
-    .outline{color:transparent;-webkit-text-stroke:1.5px rgba(240,243,255,.22)}
-    .hero-sub{font-family:var(--in);font-size:clamp(1rem,1.4vw,1.1rem);font-weight:300;color:var(--dim);max-width:480px;margin:0 auto 2.75rem;line-height:1.75;opacity:0;animation:fadein .9s ease .85s forwards}
+    .outline{color:transparent;-webkit-text-stroke:1.5px rgba(240,243,255,.35)}
+    .hero-sub{font-family:var(--in);font-size:clamp(1rem,1.4vw,1.1rem);font-weight:300;color:rgba(240,243,255,.7);max-width:480px;margin:0 auto 2.75rem;line-height:1.75;opacity:0;animation:fadein .9s ease .85s forwards;text-shadow:0 1px 20px rgba(0,0,0,.5)}
     .hero-cta{opacity:0;animation:fadein .9s ease 1s forwards}
-    .btn-main{display:inline-flex;align-items:center;gap:.6rem;background:var(--nr);color:#fff;padding:1rem 2.5rem;border-radius:2px;font-family:var(--in);font-size:.78rem;font-weight:500;letter-spacing:.1em;text-transform:uppercase;text-decoration:none;transition:all .3s;box-shadow:0 0 60px rgba(252,61,33,.18)}
-    .btn-main:hover{transform:translateY(-2px);box-shadow:0 0 90px rgba(252,61,33,.35)}
+    .btn-main{display:inline-flex;align-items:center;gap:.6rem;background:var(--nr);color:#fff;padding:1rem 2.5rem;border-radius:2px;font-family:var(--in);font-size:.78rem;font-weight:500;letter-spacing:.1em;text-transform:uppercase;text-decoration:none;transition:all .3s;box-shadow:0 0 80px rgba(252,61,33,.25),0 4px 24px rgba(0,0,0,.4)}
+    .btn-main:hover{transform:translateY(-2px);box-shadow:0 0 120px rgba(252,61,33,.45),0 8px 32px rgba(0,0,0,.4)}
     .btn-main svg{transition:transform .25s}
     .btn-main:hover svg{transform:translateX(4px)}
-    .hero-meta{position:absolute;bottom:2.25rem;left:50%;transform:translateX(-50%);display:flex;gap:2rem;font-family:var(--in);font-size:.62rem;font-weight:400;letter-spacing:.18em;text-transform:uppercase;color:var(--dimmer);white-space:nowrap;opacity:0;animation:fadein .8s ease 1.3s forwards}
+    .hero-meta{position:absolute;bottom:2.25rem;left:50%;transform:translateX(-50%);display:flex;gap:2rem;font-family:var(--in);font-size:.62rem;font-weight:400;letter-spacing:.18em;text-transform:uppercase;color:rgba(240,243,255,.45);white-space:nowrap;opacity:0;animation:fadein .8s ease 1.3s forwards}
     .hero-meta i{color:rgba(240,243,255,.15);font-style:normal}
 
     /* scroll indicator */
-    .scroll-ind{position:absolute;bottom:2.25rem;right:3.5rem;display:flex;flex-direction:column;align-items:center;gap:.5rem;opacity:0;animation:fadein .8s ease 1.5s forwards}
-    .scroll-ind span{font-size:.55rem;letter-spacing:.18em;text-transform:uppercase;color:var(--dimmer);writing-mode:vertical-rl}
+    .scroll-ind{position:absolute;bottom:2.25rem;right:3rem;display:flex;flex-direction:column;align-items:center;gap:.5rem;opacity:0;animation:fadein .8s ease 1.5s forwards}
+    .scroll-ind span{font-size:.55rem;letter-spacing:.18em;text-transform:uppercase;color:rgba(240,243,255,.3);writing-mode:vertical-rl}
     .scroll-line{width:1px;height:40px;background:linear-gradient(180deg,rgba(240,243,255,.3),transparent);animation:scrollpulse 1.6s ease-in-out infinite}
     @keyframes scrollpulse{0%{transform:scaleY(0);transform-origin:top}50%{transform:scaleY(1);transform-origin:top}51%{transform-origin:bottom}100%{transform:scaleY(0);transform-origin:bottom}}
 
@@ -276,44 +270,18 @@
 
 <!-- ── HERO ── -->
 <section class="hero">
-  <div class="hero-atm"></div>
-
-  <!-- ROCKET SVG -->
-  <div id="rocket-wrap">
-    <svg id="rocket-svg" viewBox="0 0 120 240" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <!-- Main body -->
-      <path id="rk-body" d="M42 210 L42 90 Q42 20 60 8 Q78 20 78 90 L78 210 Z" fill="rgba(30,50,90,0.9)" stroke="rgba(100,140,220,0.5)" stroke-width="1"/>
-      <!-- Nose cone detail lines -->
-      <line id="rk-line1" x1="60" y1="8" x2="52" y2="45" stroke="rgba(100,140,220,0.3)" stroke-width=".7"/>
-      <line id="rk-line2" x1="60" y1="8" x2="68" y2="45" stroke="rgba(100,140,220,0.3)" stroke-width=".7"/>
-      <!-- Window -->
-      <circle id="rk-win" cx="60" cy="85" r="9" fill="rgba(11,61,145,0.4)" stroke="rgba(100,140,220,0.6)" stroke-width="1.2"/>
-      <circle cx="60" cy="85" r="5" fill="rgba(11,100,220,0.25)"/>
-      <!-- Left booster -->
-      <path id="rk-bl" d="M28 195 L28 110 Q28 95 36 92 L42 90 L42 195 Z" fill="rgba(20,35,70,0.9)" stroke="rgba(100,140,220,0.4)" stroke-width="1"/>
-      <!-- Right booster -->
-      <path id="rk-br" d="M92 195 L92 110 Q92 95 84 92 L78 90 L78 195 Z" fill="rgba(20,35,70,0.9)" stroke="rgba(100,140,220,0.4)" stroke-width="1"/>
-      <!-- Left fin -->
-      <path id="rk-fl" d="M42 210 L18 232 L28 218 L42 210 Z" fill="rgba(15,25,60,0.9)" stroke="rgba(100,140,220,0.35)" stroke-width="1"/>
-      <!-- Right fin -->
-      <path id="rk-fr" d="M78 210 L102 232 L92 218 L78 210 Z" fill="rgba(15,25,60,0.9)" stroke="rgba(100,140,220,0.35)" stroke-width="1"/>
-      <!-- Engines -->
-      <ellipse id="rk-e1" cx="50" cy="213" rx="7" ry="4" fill="rgba(11,61,145,0.5)" stroke="rgba(100,140,220,0.4)" stroke-width=".8"/>
-      <ellipse id="rk-e2" cx="70" cy="213" rx="7" ry="4" fill="rgba(11,61,145,0.5)" stroke="rgba(100,140,220,0.4)" stroke-width=".8"/>
-      <!-- NASA stripe -->
-      <rect x="42" y="130" width="36" height="4" fill="rgba(252,61,33,0.55)" rx="1"/>
-      <!-- USA text hint (tiny) -->
-      <rect x="48" y="158" width="24" height="2" fill="rgba(240,243,255,0.12)" rx="1"/>
-    </svg>
-    <!-- Exhaust -->
-    <div id="exhaust">
-      <div class="ex-p"></div>
-      <div class="ex-p"></div>
-      <div class="ex-p"></div>
-    </div>
-    <!-- Shockwave -->
-    <div id="shockwave"></div>
+  <!-- NASA Artemis II launch video — public domain -->
+  <div class="hero-video">
+    <iframe
+      src="https://www.youtube.com/embed/vaf-WYhRh0M?autoplay=1&mute=1&loop=1&controls=0&playlist=vaf-WYhRh0M&rel=0&showinfo=0&modestbranding=1&iv_load_policy=3&disablekb=1&start=8"
+      allow="autoplay; encrypted-media"
+      allowfullscreen
+      title="NASA Artemis II Launch">
+    </iframe>
   </div>
+  <div class="hero-glow-top"></div>
+  <div class="hero-vignette"></div>
+  <div class="hero-sides"></div>
 
   <div class="hero-content">
     <span class="hero-label">2do Foro Internacional · Lima, Perú · <span>2026</span></span>
@@ -601,74 +569,6 @@ rsz();ist();drs();window.addEventListener('resize',()=>{rsz();ist()});
 /* ── NAV ── */
 const navEl=document.getElementById('nav');
 window.addEventListener('scroll',()=>navEl.classList.toggle('s',scrollY>50),{passive:true});
-
-/* ── ROCKET LAUNCH ── */
-const rocketWrap=document.getElementById('rocket-wrap');
-const exhaust=document.getElementById('exhaust');
-const shockwave=document.getElementById('shockwave');
-let launched=false;
-let launchY=0; // how far it's traveled
-
-// Phase 1: Draw-in (rocket SVG paths animate stroke-dashoffset on load)
-// Phase 2: Ignition at t=2.2s
-// Phase 3: Launch at t=2.7s
-// Phase 4: Scroll-driven parallax after launch
-
-// Stroke draw-in
-const paths=[...document.querySelectorAll('#rocket-svg path,#rocket-svg ellipse,#rocket-svg line,#rocket-svg rect,#rocket-svg circle')];
-paths.forEach((p,i)=>{
-  const len=p.getTotalLength?p.getTotalLength():60;
-  p.style.strokeDasharray=len;
-  p.style.strokeDashoffset=len;
-  p.style.transition=`stroke-dashoffset 0.7s cubic-bezier(.4,0,.2,1) ${0.1+i*0.08}s, fill 0.5s ease ${0.3+i*0.06}s`;
-  // Start fill transparent
-  const orig=p.style.fill||window.getComputedStyle(p).fill;
-  p.setAttribute('data-fill',orig);
-  p.style.fill='transparent';
-});
-
-// Trigger draw after fonts load
-setTimeout(()=>{
-  paths.forEach(p=>{
-    p.style.strokeDashoffset=0;
-    setTimeout(()=>{
-      const df=p.getAttribute('data-fill');
-      if(df&&df!='none'&&df!='transparent')p.style.fill=df;
-    },400);
-  });
-},300);
-
-// Ignition sequence
-setTimeout(()=>{
-  // Exhaust flickers on
-  exhaust.style.opacity='1';
-  // Shockwave
-  shockwave.style.transition='transform .4s cubic-bezier(.2,0,.4,1), opacity .4s ease';
-  shockwave.style.transform='translateX(-50%) scale(1)';
-  shockwave.style.opacity='1';
-  setTimeout(()=>{
-    shockwave.style.transform='translateX(-50%) scale(3)';
-    shockwave.style.opacity='0';
-  },100);
-},2200);
-
-// Launch
-setTimeout(()=>{
-  launched=true;
-  rocketWrap.style.transition='transform 3.5s cubic-bezier(.4,0,.15,1)';
-  rocketWrap.style.transform='translateX(-50%) translateY(-110vh)';
-  // Fade exhaust as rocket goes far
-  setTimeout(()=>{exhaust.style.opacity='0'},1800);
-},2700);
-
-/* ── SCROLL-DRIVEN PARALLAX (before launch) ── */
-window.addEventListener('scroll',()=>{
-  if(!launched){
-    const p=Math.min(scrollY/window.innerHeight,1);
-    rocketWrap.style.transform=`translateX(-50%) translateY(${-p*60}px)`;
-    if(p>.1&&exhaust.style.opacity==='0')exhaust.style.opacity=String(p*.8);
-  }
-},{passive:true});
 
 /* ── REVEAL ── */
 const revealObs=new IntersectionObserver(es=>{
